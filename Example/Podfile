@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'RayKit_Example' do
+  pod 'RayKit', :path => '../'
+
+  target 'RayKit_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
