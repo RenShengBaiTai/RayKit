@@ -1,5 +1,7 @@
 use_frameworks!
 
+platform :ios, '9.0'
+
 target 'RayKit_Example' do
   pod 'RayKit', :path => '../'
 

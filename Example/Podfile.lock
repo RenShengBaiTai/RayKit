@@ -1,0 +1,16 @@
+PODS:
+  - RayKit (0.1.0)
+
+DEPENDENCIES:
+  - RayKit (from `../`)
+
+EXTERNAL SOURCES:
+  RayKit:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  RayKit: 75080c7fcef6ce9a0377f5d0b15a52d100f7cdca
+
+PODFILE CHECKSUM: b75bd25831994c4d8e7529ae60d9bdaf9fe27d55
+
+COCOAPODS: 1.8.4

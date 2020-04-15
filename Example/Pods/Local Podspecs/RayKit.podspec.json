@@ -1,0 +1,22 @@
+{
+  "name": "RayKit",
+  "version": "0.1.0",
+  "summary": "A short description of RayKit.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/757038564@qq.com/RayKit",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "757038564@qq.com": "caixiaobo2018@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/757038564@qq.com/RayKit.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "RayKit/Classes/**/*"
+}

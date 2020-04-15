@@ -1,0 +1,6 @@
+framework module RayKit {
+  umbrella header "RayKit-umbrella.h"
+
+  export *
+  module * { export * }
+}
