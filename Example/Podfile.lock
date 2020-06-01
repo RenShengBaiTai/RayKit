@@ -1,15 +1,22 @@
 PODS:
-  - RayKit (0.1.0)
+  - KeychainSwift (19.0.0)
+  - RayKit (1.0.0):
+    - KeychainSwift
 
 DEPENDENCIES:
   - RayKit (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - KeychainSwift
 
 EXTERNAL SOURCES:
   RayKit:
     :path: "../"
 
 SPEC CHECKSUMS:
-  RayKit: 75080c7fcef6ce9a0377f5d0b15a52d100f7cdca
+  KeychainSwift: a06190cf933ad46b1e0abc3d77d29c06331715c7
+  RayKit: 4eb88ca3dba27a5b5edb509d7a1d2d885676576d
 
 PODFILE CHECKSUM: b75bd25831994c4d8e7529ae60d9bdaf9fe27d55
 

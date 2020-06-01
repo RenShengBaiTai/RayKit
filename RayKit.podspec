@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RayKit'
-  s.version          = '0.1.0'
+  s.version          = '1.0.0'
   s.summary          = 'A short description of RayKit.'
 
 # This description is used to generate tags and improve search results.
@@ -32,6 +32,9 @@ TODO: Add long description of the pod here.
 
   s.source_files = 'RayKit/Classes/**/*'
   
+  s.dependency 'KeychainSwift'
+
+
   # s.resource_bundles = {
   #   'RayKit' => ['RayKit/Assets/*.png']
   # }

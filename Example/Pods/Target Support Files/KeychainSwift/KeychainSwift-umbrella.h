@@ -10,9 +10,7 @@
 #endif
 #endif
 
-#import "Contract-Bridging-Header.h"
-#import "RayRSATool.h"
 
-FOUNDATION_EXPORT double RayKitVersionNumber;
-FOUNDATION_EXPORT const unsigned char RayKitVersionString[];
+FOUNDATION_EXPORT double KeychainSwiftVersionNumber;
+FOUNDATION_EXPORT const unsigned char KeychainSwiftVersionString[];
 
