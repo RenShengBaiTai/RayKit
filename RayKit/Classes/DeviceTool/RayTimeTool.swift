@@ -66,26 +66,48 @@ public class RayTimeTool{
     /// - Parameter flag:
     public class func getYesterdayWithType(_ flag: Bool) -> String{
                      
+        return RayTimeTool.getYesterdayWithType(flag, .noneType)
+    }
+ 
+    /// 获取昨天的0 点（flase） 和 24点（true）
+    /// - Parameter flag:
+    public class func getYesterdayWithType(_ flag: Bool, _ type: timeType) -> String{
+                     
         let calendar: NSCalendar = NSCalendar.init(identifier: .chinese)!
         let timeZone = TimeZone(secondsFromGMT: 8 * 3600)
         calendar.timeZone = timeZone!
-        let unitFlags: NSCalendar.Unit = [
+        
+         var components: DateComponents
+        if type == .noneType {
+            
+            let unitFlags: NSCalendar.Unit = [
                 NSCalendar.Unit.year,
                 NSCalendar.Unit.month,
                 NSCalendar.Unit.day,
                 NSCalendar.Unit.hour,
                 NSCalendar.Unit.minute,
                 NSCalendar.Unit.second]
+            
+            components = calendar.components(unitFlags, from: Date())
+            components.hour = flag ? 0 : -24
+            components.minute = 0
+            components.second = 0
+        }else {
+            
+            let unitFlags: NSCalendar.Unit = [
+                NSCalendar.Unit.year,
+                NSCalendar.Unit.month,
+                NSCalendar.Unit.day]
+            components = calendar.components(unitFlags, from: Date())
+            components.hour = flag ? 0 : -24
+        }
              
-        var components: DateComponents = calendar.components(unitFlags, from: Date())
-        components.hour = flag ? 0 : -24
-        components.minute = 0
-        components.second = 0
         guard let date = calendar.date(from: components) else {
         
             return RayTimeTool.getCurrentDate()
         }
-        return RayTimeTool.getDateToStr(date, .noneType)
+        return RayTimeTool.getDateToStr(date, type)
     }
-        
+    
+    
 }

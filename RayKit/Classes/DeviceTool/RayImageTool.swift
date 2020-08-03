@@ -31,4 +31,15 @@ public class RayImageTool: NSObject {
         
         return imageDate
     }
+    
+    // 获取私有库bundle 图片
+    public static func getBundleImage(imageName: String, bundleName: String, targetClass: AnyClass) -> UIImage{
+        
+        let scale = UIScreen.main.scale
+        let curB = Bundle.init(for: targetClass)
+        let imgName = String.init(format: "%@@%.0fx.png", imageName, scale)
+        let dir = bundleName + ".bundle"
+        let path = curB.path(forResource: imgName, ofType: nil, inDirectory: dir)
+        return UIImage.init(contentsOfFile: path ?? "") ?? UIImage()
+    }
 }

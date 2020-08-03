@@ -5,10 +5,10 @@
 //  Created by admin on 2020/5/12.
 //
 
-public class RayJsonTool {
+public class RayJsonTool: NSObject {
     
     // JSONString转换为字典
-    public class func getDictionaryFromJSONString(jsonString: String) ->Dictionary<String, Any>{
+    @objc public class func getDictionaryFromJSONString(jsonString: String) ->Dictionary<String, Any>{
      
         if jsonString.count == 0{
             
@@ -18,13 +18,13 @@ public class RayJsonTool {
         let jsonData:Data = jsonString.data(using: .utf8)!
         let dict = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
         if dict != nil {
-            return dict as! Dictionary
+            return dict as? Dictionary<String, Any> ?? Dictionary()
         }
         return Dictionary()
     }
 
     // JSONString转换为数组
-    public class func getArrayFromJSONString(jsonString: String) ->Array<Any>{
+    @objc public class func getArrayFromJSONString(jsonString: String) ->Array<Any>{
          
         if jsonString.count == 0{
         
@@ -34,9 +34,22 @@ public class RayJsonTool {
         let jsonData:Data = jsonString.data(using: .utf8)!
         let array = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
         if array != nil {
-            return array as! Array
+            return array as? Array ?? Array()
         }
-        return array as! Array
+        return Array()
+    }
+    
+    // JSONString转换为字符串
+    @objc public class func getStringFromJSONString(jsonString: String) -> String{
+         
+        if jsonString.count == 0{
+        
+            return String()
+        }
+        
+        let data = jsonString.data(using: String.Encoding.utf8, allowLossyConversion: false) ?? Data()
+        return String(data: data, encoding:String.Encoding.utf8) ?? ""
+        
     }
 
     /**
@@ -46,7 +59,7 @@ public class RayJsonTool {
       
      - returns: JSONString
      */
-    public class func getJSONStringFromDictionary(dictionary:Dictionary<String, Any>) -> String {
+    @objc public class func getJSONStringFromDictionary(dictionary:Dictionary<String, Any>) -> String {
         
         if (!JSONSerialization.isValidJSONObject(dictionary)) {
             print("无法解析出JSONString")
@@ -59,7 +72,7 @@ public class RayJsonTool {
     }
 
     //数组转json
-    public class func getJSONStringFromArray(array:Array<Any>) -> String {
+    @objc public class func getJSONStringFromArray(array:Array<Any>) -> String {
          
         if (!JSONSerialization.isValidJSONObject(array)) {
             print("无法解析出JSONString")

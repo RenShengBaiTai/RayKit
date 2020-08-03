@@ -179,7 +179,7 @@ public class RayTabbarController: UITabBarController, UITabBarControllerDelegate
          可以根据UI的具体要求进行动画渲染
          */
         let pulse = CABasicAnimation.init(keyPath: "transform.scale")
-        pulse.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.easeInEaseOut)
+        pulse.timingFunction = CAMediaTimingFunction.init(name: .easeInEaseOut)
         pulse.duration = 0.2
         pulse.repeatCount = 1
         pulse.autoreverses = true

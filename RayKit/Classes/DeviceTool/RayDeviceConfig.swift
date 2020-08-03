@@ -33,6 +33,22 @@ public func RayTabBarBottomHeight() -> CGFloat {
     return  RayScreenHeight / RayScreenWidth > 2 ? 34 :0;
 }
 
+// 渠道
+public let RayChannel = "AppStore"
+
+// 版本
+public func RayCurrentAppVersion() -> String {
+    
+    let infoDic = Bundle.main.infoDictionary
+    return infoDic?["CFBundleShortVersionString"] as! String
+}
+
+// 系统版本
+public func RaySystemVersion() -> String {
+    
+    return UIDevice.current.systemVersion
+}
+
 // 最上层VC
 public var RayTopVC: UIViewController? {
     

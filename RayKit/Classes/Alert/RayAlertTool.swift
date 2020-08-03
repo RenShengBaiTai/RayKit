@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import SnapKit
 
 public enum toastPlace {
     case toastTop
@@ -34,12 +34,15 @@ public class RayAlertTool: NSObject {
     
     var keyWindow = UIApplication.shared.keyWindow
     let rv = UIApplication.shared.keyWindow?.subviews.first as UIView?
-
+    
     //toast
     var toastBottomView: UIView?
     
+    //弹窗
+    var alartBottomView: UIView?
+    
     //toast
-    public func showToast(content:String, place: toastPlace = .toastBottom, duration:CFTimeInterval=1.5) {
+    public func showToast(content: String, place: toastPlace = .toastBottom, duration:CFTimeInterval=1.5) {
         
         removeToastBottomView()
         let attributes = [NSAttributedString.Key.font: UIFont.RaySystemFont(ofSize: 14)]
@@ -73,9 +76,118 @@ public class RayAlertTool: NSObject {
         keyWindow?.addSubview(toastBottomView!)
         keyWindow?.bringSubviewToFront(toastBottomView!)
 
-        toastContainerView.layer.add(AnimationUtil.getToastAnimation(duration: duration), forKey: "animation")
+        toastContainerView.layer.add(RayAlertViewAnimationTool.getToastAnimation(duration: duration), forKey: "animation")
 
         perform(#selector(removeToastBottomView), with: nil, afterDelay: duration)
+    }
+    
+    // 普通的alert
+    public func showAlertView(title: String, content: String, left: String?, right: String, clickClosure: @escaping (_ direction: Bool) -> Void) {
+        
+        self.showAlertView(title: title, content: NSAttributedString(string: content), left: left, right: right, clickClosure: clickClosure)
+    }
+    
+    public func showAlertView(title: String, content: NSAttributedString, left: String?, right: String, clickClosure: @escaping (_ direction: Bool) -> Void) {
+        
+        self.removeBottomView()
+        
+        if left == nil || left?.count == 0{
+            
+            let alertView = PDLSingleAlertView.init(title: title, message: content, buttonText:right, clickClosure: { () in
+                
+                    self.removeBottomView()
+                    clickClosure(true)
+            })
+            self.showOneAndTwoAlertView(alertView: alertView)
+            alertView.show()
+        }else{
+            
+            let type: PDLAlertType = content.string.count == 0 ? .oneType : .none
+            let alertView = PDLAlertView.init(title: title, message: content, leftText: left ?? "取消", rightText: right, type: type, clickClosure: { (direction) in
+                
+                     self.removeBottomView()
+                     clickClosure(direction)
+             })
+            
+            self.showOneAndTwoAlertView(alertView: alertView)
+            alertView.show()
+        }
+    }
+    
+    // 升级alert
+    public func showUpAPPAlertView(content: String, right: String, isShowCancel: Bool, clickClosure: @escaping () -> Void) {
+        
+        self.removeBottomView()
+        let alertView = RayUpAPPAlertView.init(message: content, rightText:right, isShowCancel: isShowCancel, clickClosure: { (direction) in
+            
+            if direction == false {
+                clickClosure()
+            }
+            self.removeBottomView()
+        })
+        self.showOneAndTwoAlertView(alertView: alertView)
+        alertView.show()
+    }
+    
+    // 带有输入框的alert
+    public func showTFAlertView(title: String, content: String, left: String, right: String, clickClosure: @escaping (_ direction: Bool, _ text: String) -> Void) {
+        
+        self.removeBottomView()
+        
+        let alertView = RayTFAlertView.init(title: title, message: content, leftText: left, rightText: right, clickClosure: { (isL, text) in
+            
+            self.removeBottomView()
+            clickClosure(isL, text)
+        })
+        
+        self.showOneAndTwoAlertView(alertView: alertView)
+        alertView.show()
+    }
+    
+    // copyalert
+    public func showCopyAlertView(title: String, content: String, right: String, clickClosure: @escaping () -> Void) {
+        
+        self.removeBottomView()
+        
+        let alertView = RayCopyAlertView.init(title: title, message: content, rightText: right, clickClosure: { () in
+            
+            self.removeBottomView()
+            clickClosure()
+        })
+        
+        self.showOneAndTwoAlertView(alertView: alertView)
+        alertView.show()
+    }
+    
+    // 显示alertview
+    private func showOneAndTwoAlertView(alertView: UIView) {
+        
+        alartBottomView = UIView()
+        
+        alartBottomView!.backgroundColor = UIColor.clear
+        alartBottomView!.frame = UIScreen.main.bounds
+        
+        //半透明背景
+        let bgBlackView = UIView()
+        bgBlackView.backgroundColor = UIColor.black
+        bgBlackView.alpha = 0.5
+        alartBottomView!.addSubview(bgBlackView)
+        
+        bgBlackView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+        
+        alartBottomView!.addSubview(alertView)
+        alartBottomView!.bringSubviewToFront(alertView)
+        
+        keyWindow?.addSubview(alartBottomView!)
+        keyWindow?.bringSubviewToFront(alartBottomView!)
+    }
+    
+    //移除当前弹窗
+    func removeBottomView() {
+        alartBottomView?.removeFromSuperview()
+        alartBottomView = nil
     }
     
     //移除toast
@@ -85,32 +197,3 @@ public class RayAlertTool: NSObject {
     }
 }
 
-class AnimationUtil{
-    
-    //toast动画
-    static func getToastAnimation(duration:CFTimeInterval = 1.5) -> CAAnimation{
-        // 大小变化动画
-        let scaleAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
-        scaleAnimation.keyTimes = [0, 1]
-        scaleAnimation.values = [0.8, 1]
-        scaleAnimation.duration = duration
-        
-        // 透明度变化动画
-        let opacityAnimaton = CAKeyframeAnimation(keyPath: "opacity")
-        opacityAnimaton.keyTimes = [0, 1]
-        opacityAnimaton.values = [0.5, 1]
-        opacityAnimaton.duration = duration
-        
-        // 组动画
-        let animation = CAAnimationGroup()
-        animation.animations = [scaleAnimation, opacityAnimaton]
-        //动画的过渡效果1. kCAMediaTimingFunctionLinear//线性 2. kCAMediaTimingFunctionEaseIn//淡入 3. kCAMediaTimingFunctionEaseOut//淡出4. kCAMediaTimingFunctionEaseInEaseOut//淡入淡出 5. kCAMediaTimingFunctionDefault//默认
-        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
-        
-        animation.duration = duration
-        animation.repeatCount = 0// HUGE
-        animation.isRemovedOnCompletion = true
-        
-        return animation
-    }
-}
